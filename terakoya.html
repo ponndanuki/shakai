@@ -23,6 +23,8 @@ button{font-family:inherit;cursor:pointer}
 #bar{position:absolute;left:0;right:0;bottom:0;height:52px;background:rgba(25,20,16,.88);display:flex;align-items:center;gap:8px;padding:0 12px}
 #bar button{background:#3a3027;color:#f1e6cf;border:1px solid #6b5538;border-radius:6px;padding:7px 12px;font-size:14px;white-space:nowrap}
 #bar button:hover{background:#4d3f32}
+#home{background:#3a3027;color:#f1e6cf;border:1px solid #6b5538;border-radius:6px;padding:7px 12px;font-size:14px;white-space:nowrap;text-decoration:none}
+a.go{text-decoration:none;box-sizing:border-box}
 #prog{flex:1;height:8px;background:#3a3027;border-radius:4px;position:relative;overflow:hidden;cursor:pointer}
 #prog i{position:absolute;left:0;top:0;bottom:0;width:0;background:linear-gradient(90deg,#c9a35a,#b8322a);transition:width .4s}
 #time{color:#cdbf9f;font-size:13px;min-width:44px;text-align:right}
@@ -62,7 +64,7 @@ button{font-family:inherit;cursor:pointer}
 #kanji.full .kw{animation:kfull .5s ease}
 @keyframes kfull{0%{transform:scale(1)}40%{transform:scale(1.12);text-shadow:0 0 40px #ffd77a}100%{transform:scale(1)}}
 @keyframes kin{from{opacity:0;transform:scale(1.9)}to{opacity:1;transform:scale(1)}}
-@media (max-width:600px){#cards{top:50px;right:8px;max-width:72%}.card{font-size:13px;padding:8px 10px}.card .poem{font-size:14px}#bar button{padding:6px 8px;font-size:12px}#sub{bottom:60px}#tag .t{display:none}}
+@media (max-width:600px){#cards{top:50px;right:8px;max-width:72%}.card{font-size:13px;padding:8px 10px}.card .poem{font-size:14px}#bar{gap:4px;padding:0 6px}#bar button,#home{padding:5px 6px;font-size:11px}#time{display:none}#sub{bottom:60px}#tag .t{display:none}}
 </style>
 </head>
 <body>
@@ -87,6 +89,7 @@ button{font-family:inherit;cursor:pointer}
   <div id="tag"><span class="t">1分でわかる 寺子屋</span><span class="c" id="chap" style="background:#555">はじまり</span></div>
   <div id="sub"></div>
   <div id="bar">
+    <a id="home" href="index.html">☰ 目次</a>
     <button id="play">❚❚ 停止</button>
     <button id="restart">⟲ 最初から</button>
     <div id="prog"><i></i></div><span id="time"></span>
@@ -101,6 +104,7 @@ button{font-family:inherit;cursor:pointer}
     <p class="sm">なぜ？ → どうやって？ → どうなった？ を約1分で解説します</p>
     <button class="go" id="startV">▶ 見る（語りあり）</button>
     <button class="go sub2" id="startN">字幕だけで見る</button>
+    <a class="go sub2" href="index.html">☰ 目次にもどる</a>
   </div>
 </div>
 <div class="ov" id="quiz" style="display:none"><div class="box" id="qbox"></div></div>
@@ -384,7 +388,7 @@ function speak(text,next,my){
 }
 function setPlaying(v){playing=v;$('#play').textContent=v?'❚❚ 停止':'▶ 再生';
   if(!v){token++;clearTimeout(timer);hasTTS&&speechSynthesis.cancel();audioEl.pause();hideKanji();kq=null}else if(cur>=0&&cur<S.length){go(cur)}}
-function showEnd(){const b=$('#qbox');$('#quiz').style.display='flex';b.innerHTML='<h1>おしまい</h1><p class="sm">内容をおぼえたか、クイズでたしかめよう！</p><button class="go" id="eq">✎ クイズに挑戦（4問）</button><button class="go sub2" id="er">⟲ もう一度見る</button><button class="go sub2" id="ec">まとめ画面を見る</button>';
+function showEnd(){const b=$('#qbox');$('#quiz').style.display='flex';b.innerHTML='<h1>おしまい</h1><p class="sm">内容をおぼえたか、クイズでたしかめよう！</p><button class="go" id="eq">✎ クイズに挑戦（'+QZ.length+'問）</button><button class="go sub2" id="er">⟲ もう一度見る</button><button class="go sub2" id="ec">まとめ画面を見る</button><a class="go sub2" href="index.html">☰ 目次にもどる</a>';
   $('#eq').onclick=openQuiz;$('#er').onclick=()=>{$('#quiz').style.display='none';restart()};$('#ec').onclick=()=>$('#quiz').style.display='none'}
 function restart(){cam={...S[0].cam};setPlaying(true);cur=-1;go(0)}
 
@@ -405,7 +409,7 @@ function showQ(){const q=QZ[qi],b=$('#qbox');const opts=shuffle(q.a.map((t,i)=>(
     const last=qi===QZ.length-1;b.querySelector('.qex').innerHTML=(ok?'<b class="good">⭕ 正解！</b> ':'<b class="bad">✖ ざんねん…</b> ')+q.ex+`<button class="go" id="qn">${last?'結果を見る':'次の問題へ'}</button>`;
     $('#qn').onclick=()=>{if(last)result();else{qi++;showQ()}}})}
 function result(){const b=$('#qbox');const msg=score===QZ.length?'パーフェクト！テストもばっちり！':score>=QZ.length-1?'あと少し！まとめ画面で確認しよう':'もう一度動画を見てみよう！';
-  b.innerHTML=`<h1>${score} / ${QZ.length} 問 正解</h1><p class="sm">${msg}</p><button class="go" id="r1">もう一度クイズ</button><button class="go sub2" id="r2">動画をもう一度見る</button><button class="go sub2" id="r3">閉じる</button>`;
+  b.innerHTML=`<h1>${score} / ${QZ.length} 問 正解</h1><p class="sm">${msg}</p><button class="go" id="r1">もう一度クイズ</button><button class="go sub2" id="r2">動画をもう一度見る</button><button class="go sub2" id="r3">閉じる</button><a class="go sub2" href="index.html">☰ 目次にもどる</a>`;
   $('#r1').onclick=openQuiz;$('#r2').onclick=()=>{$('#quiz').style.display='none';restart()};$('#r3').onclick=()=>$('#quiz').style.display='none'}
 
 /* ---------- ボタン ---------- */
