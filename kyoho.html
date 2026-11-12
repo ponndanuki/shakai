@@ -267,7 +267,7 @@ function sum(cols,delay=1200){const s=document.createElement('div');s.id='sum';
 const CHAP={intro:['はじまり','#555'],why:['なぜ？（背景）','#b0812a'],how:['どうやって？','#25477a'],what:['どんなもの？','#25477a'],res:['どうなった？','#b8322a']};
 const yomi=s=>{s=s.replace(/<[^>]+>/g,'');for(const[a,b]of YOMI)s=s.split(a).join(b);return s};
 
-/* ---------- 吉宗が動くバラエティ演出 ---------- */
+/* ---------- バラエティ風の演出部品（享保の改革から取り出したもの） ---------- */
 document.head.insertAdjacentHTML('beforeend',`<style>
 .studio{position:absolute;left:0;right:0;top:0;bottom:52px;overflow:hidden;background:radial-gradient(ellipse at 50% 18%,#2f5590 0%,#16284a 55%,#0a1120 100%);animation:sfade .4s}
 .studio.dark{background:radial-gradient(ellipse at 50% 30%,#5a1010 0%,#250808 60%,#0c0303 100%)}
@@ -341,38 +341,65 @@ document.head.insertAdjacentHTML('beforeend',`<style>
 .vgr{position:absolute;left:8%;right:8%;top:20%;z-index:2}
 .credit{position:absolute;left:4%;right:4%;bottom:3%;color:#c8d2e6;font-size:10px;text-align:center;line-height:1.35;z-index:4}
 </style>`);
-const IMG='img/kyoho/';
+
+/* ===== 共通の部品（台本の先頭に //USE variety と書くと入る） =====
+ 使い方の例（台本側）:
+   const IMG='img/<テーマ>/';
+   const yoshi=o=>puppet(IMG+'xxx_cut.png','人物名',o);   // 切りぬいた主役を動かす
+   const WIPE={img:IMG+'xxx_face.jpg',name:'人物名'};      // 地図の場面の左上ワイプ
+   useBGM('audio/<テーマ>_bgm.mp3');                        // bgm:1 の場面で小さく流す
+*/
 function el(cls,html,parent){const d=document.createElement('div');d.className=cls;if(html)d.innerHTML=html;(parent||fx).appendChild(d);return d}
 function studio(o={}){const b=el('studio'+(o.dark?' dark':''));if(o.bg)b.style.background=o.bg;
  if(o.lights!==false)[15,50,85].forEach((x,j)=>{const m=el('lt','',b);m.style.left=(x-14)+'%';m.style.animationDelay=(-j*1.3)+'s'});
  el('fl','',b);return b}
 const telop=(t,cls,parent,top)=>{const d=el('telop'+(cls?' '+cls:''),t,parent);if(top)d.style.top=top;return d};
-/* 肖像画から切りぬいた吉宗を、舞台の上で動かす */
-function yoshi(o={}){const d=el('yo','',o.parent||fx);d.style.left=(o.x??50)+'%';d.style.bottom=`calc(${o.y??0}% + 118px)`;if(o.w)d.style.width=o.w;
- const im=document.createElement('img');im.src=IMG+'yoshi_cut.png';im.alt='徳川吉宗';d.appendChild(im);
+/* 切りぬき画像の人物を舞台で動かす。act: enter hop bow shake nod jump spin read sad ／ emo: 絵文字 ／ say: ふきだし ／ to: 移動 */
+function puppet(src,alt,o={}){const d=el('yo','',o.parent||fx);d.style.left=(o.x??50)+'%';d.style.bottom=`calc(${o.y??0}% + 118px)`;if(o.w)d.style.width=o.w;
+ const im=document.createElement('img');im.src=src;im.alt=alt||'';d.appendChild(im);
  const Y={el:d,
   act(a,ms){im.className='';void im.offsetWidth;im.className=a||'';if(ms)after(ms,()=>{if(im.className===a)im.className=o.idle||''});return Y},
   emo(e,ms=2200){d.querySelectorAll('.emo').forEach(x=>x.remove());const x=el('emo',e,d);if(ms)after(ms,()=>x.remove());return Y},
   say(t,r){d.querySelectorAll('.ys').forEach(x=>x.remove());if(t)el('ys'+(r?' r':''),t,d);return Y},
   to(x,y,w){d.style.left=x+'%';if(y!=null)d.style.bottom=`calc(${y}% + 118px)`;if(w)d.style.width=w;return Y}};
  if(o.enter!==false)Y.act('enter',1000);else if(o.idle)Y.act(o.idle);return Y}
-/* 地図の場面では、左上の「ワイプ」で吉宗がリアクションする */
-function wipe(t){let w=fx.querySelector('.wipe');if(!w)w=el('wipe',`<img src="${IMG}yoshi_face.jpg" alt="徳川吉宗"><b>吉宗</b>`);
+/* 地図の場面の左上ワイプ（台本側で WIPE={img,name} を決めておく） */
+function wipe(t){let w=fx.querySelector('.wipe');if(!w)w=el('wipe',`<img src="${WIPE.img}" alt="${WIPE.name}"><b>${WIPE.name}</b>`);
  w.querySelectorAll('i').forEach(x=>x.remove());if(t){const i=document.createElement('i');i.innerHTML=t;w.appendChild(i)}
  w.classList.remove('react');void w.offsetWidth;w.classList.add('react');return w}
-function rowsAt(p,h,cls){const d=el(cls||'',h,p);return d}
-/* 語りの進み具合（0〜1）に合わせて、合図を出す */
+function rowsAt(p,h,cls){return el(cls||'',h,p)}
+/* 語りの進み具合（0〜1）に合わせて合図を出す */
 function cue(list){const t0=performance.now(),tot=est(S[cur].say);let k=0;
  tween(600000,()=>{const f=(voiceOn&&AUDIO.length&&audioEl.duration>0)?audioEl.currentTime/audioEl.duration:(performance.now()-t0)/tot;
   while(k<list.length&&f>=list[k][0]){list[k][1]();k++}})}
+/* 音声の経過ミリ秒に合わせて合図を出す（歌の場面用）。full は音声の長さ(ms) */
 function cueMs(list,full){const t0=performance.now(),tot=est(S[cur].say);let k=0;
  tween(600000,()=>{const ms=(voiceOn&&AUDIO.length&&audioEl.duration>0)?audioEl.currentTime*1000:(performance.now()-t0)*full/tot;
   while(k<list.length&&ms>=list[k][0]){list[k][1]();k++}})}
-/* BGM（自作の伴奏）を、bgm:1 の場面で小さく流す */
-const BGM=new Audio('audio/kyoho_bgm.mp3');BGM.loop=true;BGM.volume=.16;
-const bgmFor=i=>{const s=S[i];if(s&&s.bgm&&playing&&voiceOn)BGM.play().catch(()=>{});else BGM.pause()};
-{const _go=go;go=function(i){_go(i);bgmFor(i)};const _sp=setPlaying;setPlaying=function(v){_sp(v);bgmFor(cur)};
+/* BGM（自作の伴奏）を bgm:1 の場面で小さく流す */
+let BGM=null;const bgmFor=i=>{if(!BGM)return;const s=S[i];if(s&&s.bgm&&playing&&voiceOn)BGM.play().catch(()=>{});else BGM.pause()};
+function useBGM(src){BGM=new Audio(src);BGM.loop=true;BGM.volume=.16;
+ const _go=go;go=function(i){_go(i);bgmFor(i)};const _sp=setPlaying;setPlaying=function(v){_sp(v);bgmFor(cur)};
  const _st=start;start=function(v){BGM.muted=true;BGM.play().then(()=>{BGM.pause();BGM.muted=false;bgmFor(cur)}).catch(()=>{BGM.muted=false});_st(v)}}
+/* 覚えうたの場面。make_song.py が表示する T0・BAR・SONG と、歌詞の行 lines=[[前半,後半,画像,色],...] を渡す。
+   bars: 1行の小節数、half: 後半が出る小節（行の頭から）、pup: 動かす人物（なくてもよい） */
+function sing(o){const b=studio();const box=el('chant','',b);const y=o.pup?o.pup({parent:b,x:50,y:0,w:'clamp(150px,50vw,300px)'}):null;
+ const {T0,BAR,SONG,lines:L}=o,bars=o.bars||2,half=o.half??bars/2;
+ const word=(w,c)=>{const d=document.createElement('span');d.className='w';d.textContent=w;d.style.setProperty('--mc',c);return d};
+ const show=(w,i,first)=>{const [,,im,c]=L[i];
+   if(first){box.innerHTML='';el('flash','',b);b.style.background=`radial-gradient(ellipse at 50% 30%,${c}66 0%,${c}00 60%),radial-gradient(ellipse at 50% 18%,#2f5590 0%,#16284a 55%,#0a1120 100%)`;
+    if(im)box.insertAdjacentHTML('beforeend',`<img src="${o.img+im}" style="--mc:${c}${o.gray===i?';filter:grayscale(1)':''}" alt="">`)}
+   if(!first)box.appendChild(document.createElement('br'));box.appendChild(word(w,c))};
+ const cs=[[0,()=>box.appendChild(word('♪ 覚えうた ♪','#fff200'))]];
+ L.forEach(([a,c],i)=>{cs.push([T0+BAR*(1+bars*i),()=>{show(a,i,true);$('#sub').innerHTML='♪ '+a+'　'+c;if(y)y.act(o.gray===i?'shake':'hop')}]);cs.push([T0+BAR*(1+bars*i+half),()=>show(c,i,false)])});
+ cs.push([T0+BAR*(1+bars*L.length),()=>{box.innerHTML='';if(y)y.act('bow');box.appendChild(word('♪ おぼえた？ ♪','#fff200'))}]);
+ cueMs(cs,SONG)}
+
+
+const IMG='img/kyoho/';
+const yoshi=o=>puppet(IMG+'yoshi_cut.png','徳川吉宗',o);
+const WIPE={img:IMG+'yoshi_face.jpg',name:'吉宗'};
+useBGM('audio/kyoho_bgm.mp3');
 Object.assign(CHAP,{op:['幕府、赤字です。','#c0151a'],song:['覚えうた','#ef7d00'],twist:['まさかの展開','#555']});
 Object.assign(P,{koishikawa:[139.75,35.72],minuma:[139.68,35.92]});
 const KISHU=camLL(137.6,35.1,660,520),EDO=camLL(139.6,35.6,480,420),CENTER=camLL(137.2,35.6,980,820),KANTO2=camLL(139.85,35.85,300,300);
@@ -449,17 +476,7 @@ const S=[
     [0.65,()=>{for(let j=0;j<16;j++)after(j*180,()=>{const f=el('fall','🍠',b);f.style.left=(Math.random()*92)+'%'});y.act('hop')}],
     [0.95,()=>y.act('')]])}},
  {c:'song',cam:EDO,say:'ここで、覚えうた！　享保改革、吉宗。上げ米、大名、米出して。新田開発、米ふやす。目安箱から、養生所。御定書で、裁判。米将軍でも、打ちこわし。',
-  run(){const b=studio();const box=el('chant','',b);const y=yoshi({parent:b,x:50,y:0,w:'clamp(150px,50vw,300px)'});
-   const T0=1990,BAR=2400,SONG=35190;
-   const L=[['享保改革','吉宗','yoshi_face.jpg','#fff200'],['上げ米、大名','米出して','daimyo1711.jpg','#ffb36b'],['新田開発','米ふやす','minuma.jpg','#7ddc6a'],['目安箱から','養生所','well.jpg','#7fd3ff'],['御定書で','裁判','ooka_face.jpg','#e0b0ff'],['米将軍でも','打ちこわし','dojima.jpg','#ff7a7a']];
-   const show=(w,i,first)=>{const [,,im,c]=L[i];
-     if(first){box.innerHTML='';el('flash','',b);b.style.background=`radial-gradient(ellipse at 50% 30%,${c}66 0%,${c}00 60%),radial-gradient(ellipse at 50% 18%,#2f5590 0%,#16284a 55%,#0a1120 100%)`;
-      box.insertAdjacentHTML('beforeend',`<img src="${IMG+im}" style="--mc:${c}${i===5?';filter:grayscale(1)':''}" alt="">`)}
-     const d=document.createElement('span');d.className='w';d.textContent=w;d.style.setProperty('--mc',c);if(!first)box.appendChild(document.createElement('br'));box.appendChild(d)};
-   const cs=[[0,()=>{const d=document.createElement('span');d.className='w';d.textContent='♪ 覚えうた ♪';d.style.setProperty('--mc','#fff200');box.appendChild(d)}]];
-   L.forEach(([a,c],i)=>{cs.push([T0+BAR*(1+2*i),()=>{show(a,i,true);$('#sub').innerHTML='♪ '+a+'　'+c;y.act(i===5?'shake':'hop')}]);cs.push([T0+BAR*(2+2*i),()=>show(c,i,false)])});
-   cs.push([T0+BAR*13,()=>{box.innerHTML='';y.act('bow');const d=document.createElement('span');d.className='w';d.textContent='♪ おぼえた？ ♪';d.style.setProperty('--mc','#fff200');box.appendChild(d)}]);
-   cueMs(cs,SONG)}},
+  run(){sing({T0:1990,BAR:2400,SONG:35190,bars:2,img:IMG,pup:yoshi,gray:5,lines:[['享保改革','吉宗','yoshi_face.jpg','#fff200'],['上げ米、大名','米出して','daimyo1711.jpg','#ffb36b'],['新田開発','米ふやす','minuma.jpg','#7ddc6a'],['目安箱から','養生所','well.jpg','#7fd3ff'],['御定書で','裁判','ooka_face.jpg','#e0b0ff'],['米将軍でも','打ちこわし','dojima.jpg','#ff7a7a']]})}},
  {c:'twist',cam:EDO,say:'ところが1732年、害虫のせいで西日本の稲が大きな被害を受け、<b>ききん</b>がおこります。米の値段が上がり、翌年、江戸で初めての<b>打ちこわし</b>がおきました。',
   run(){const b=studio({dark:true,lights:false});const y=yoshi({parent:b,x:50,y:0});const p=el('panel','',b);p.style.top='30%';
    cue([[0.08,()=>{rowsAt(p,'<span class="yr">1732年</span>害虫で稲がやられる → <em>ききん</em>');for(let j=0;j<14;j++)after(j*150,()=>{const f=el('fall','🦗',b);f.style.left=(Math.random()*92)+'%'})}],
