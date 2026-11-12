@@ -12,7 +12,7 @@
  */
 (function () {
   'use strict';
-  var ENDPOINT = ''; // ← 例: 'https://script.google.com/macros/s/XXXXXXXX/exec'
+  var ENDPOINT = 'https://script.google.com/macros/s/AKfycbzEf0Enu4r5G7EVqmiyYetiVhZyJIVlsv45T5MzXfgfUgW7D0gDKuA8GFUOh_Kn_ZRU1Q/exec'; // ← 例: 'https://script.google.com/macros/s/XXXXXXXX/exec'
 
   var LOG = function () { try { console.debug.apply(console, ['[track]'].concat([].slice.call(arguments))); } catch (e) {} };
 
