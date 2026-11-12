@@ -1,0 +1,51 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 560 420" width="560" height="420">
+  <!-- はかま（すわった形） -->
+  <path d="M70 410 Q90 318 190 300 L370 300 Q470 318 490 410 Z" fill="#3b4a63" stroke="#1d2433" stroke-width="4" stroke-linejoin="round"/>
+  <path d="M280 306 L280 410 M200 312 L180 410 M360 312 L380 410" stroke="#2a3549" stroke-width="4"/>
+  <!-- 着物の胴 -->
+  <path d="M198 196 L362 196 L376 316 L184 316 Z" fill="#7a4b2e" stroke="#3a2416" stroke-width="4" stroke-linejoin="round"/>
+  <!-- 白いえり -->
+  <path d="M248 192 L280 262 L312 192 L298 192 L280 236 L262 192 Z" fill="#f5f0e6" stroke="#3a2416" stroke-width="2"/>
+  <!-- かたぎぬ（かみしもの肩） -->
+  <path d="M104 196 Q180 178 252 192 L276 300 L214 300 L196 222 Q150 214 104 214 Z" fill="#2f6b5a" stroke="#173a30" stroke-width="4" stroke-linejoin="round"/>
+  <path d="M456 196 Q380 178 308 192 L284 300 L346 300 L364 222 Q410 214 456 214 Z" fill="#2f6b5a" stroke="#173a30" stroke-width="4" stroke-linejoin="round"/>
+  <!-- 腕 -->
+  <path d="M196 222 Q170 260 196 300 L246 312 L240 286 Q214 280 214 256 Z" fill="#6a4128" stroke="#3a2416" stroke-width="4" stroke-linejoin="round"/>
+  <path d="M364 222 Q390 260 364 300 L314 312 L320 286 Q346 280 346 256 Z" fill="#6a4128" stroke="#3a2416" stroke-width="4" stroke-linejoin="round"/>
+  <!-- そろばん -->
+  <rect x="200" y="288" width="160" height="56" rx="6" fill="#8b5a2b" stroke="#3a2416" stroke-width="4"/>
+  <rect x="210" y="296" width="140" height="40" fill="#f3e3c3"/>
+  <line x1="210" y1="308" x2="350" y2="308" stroke="#3a2416" stroke-width="4"/>
+  <g fill="#5a3418">
+    <rect x="216" y="298" width="14" height="8" rx="3"/><rect x="240" y="298" width="14" height="8" rx="3"/><rect x="264" y="298" width="14" height="8" rx="3"/><rect x="288" y="298" width="14" height="8" rx="3"/><rect x="312" y="298" width="14" height="8" rx="3"/>
+    <rect x="216" y="312" width="14" height="8" rx="3"/><rect x="240" y="318" width="14" height="8" rx="3"/><rect x="264" y="312" width="14" height="8" rx="3"/><rect x="288" y="326" width="14" height="8" rx="3"/><rect x="312" y="318" width="14" height="8" rx="3"/>
+  </g>
+  <!-- 手 -->
+  <ellipse cx="214" cy="304" rx="16" ry="12" fill="#f4d3b2" stroke="#3a2a20" stroke-width="3"/>
+  <ellipse cx="346" cy="304" rx="16" ry="12" fill="#f4d3b2" stroke="#3a2a20" stroke-width="3"/>
+  <!-- 首 -->
+  <rect x="266" y="176" width="28" height="26" fill="#efc7a3"/>
+  <!-- 頭 -->
+  <ellipse cx="280" cy="128" rx="60" ry="66" fill="#f4d3b2" stroke="#3a2a20" stroke-width="3"/>
+  <!-- 横の髪 -->
+  <path d="M222 120 Q218 160 236 182 L242 150 Q238 128 240 108 Z" fill="#2a2320"/>
+  <path d="M338 120 Q342 160 324 182 L318 150 Q322 128 320 108 Z" fill="#2a2320"/>
+  <!-- さかやき（そったところ） -->
+  <path d="M232 96 Q280 52 328 96 Q306 84 280 82 Q254 84 232 96 Z" fill="#dfe6ea" stroke="#3a2a20" stroke-width="2"/>
+  <!-- まげ -->
+  <rect x="270" y="40" width="20" height="50" rx="9" fill="#2a2320"/>
+  <rect x="266" y="62" width="28" height="7" rx="3" fill="#f5f0e6"/>
+  <!-- 耳 -->
+  <ellipse cx="220" cy="134" rx="9" ry="14" fill="#efc7a3" stroke="#3a2a20" stroke-width="2"/>
+  <ellipse cx="340" cy="134" rx="9" ry="14" fill="#efc7a3" stroke="#3a2a20" stroke-width="2"/>
+  <!-- まゆ・目 -->
+  <path d="M246 112 Q258 104 270 110" fill="none" stroke="#2a2320" stroke-width="5" stroke-linecap="round"/>
+  <path d="M290 110 Q302 104 314 112" fill="none" stroke="#2a2320" stroke-width="5" stroke-linecap="round"/>
+  <path d="M250 130 Q258 122 266 130" fill="none" stroke="#2a2320" stroke-width="4.5" stroke-linecap="round"/>
+  <path d="M294 130 Q302 122 310 130" fill="none" stroke="#2a2320" stroke-width="4.5" stroke-linecap="round"/>
+  <!-- ほお・鼻・口 -->
+  <ellipse cx="246" cy="150" rx="11" ry="7" fill="#f2a28c" opacity=".7"/>
+  <ellipse cx="314" cy="150" rx="11" ry="7" fill="#f2a28c" opacity=".7"/>
+  <path d="M280 136 Q284 148 278 150" fill="none" stroke="#b07a5a" stroke-width="3" stroke-linecap="round"/>
+  <path d="M262 164 Q280 180 298 164" fill="#a33a2e" stroke="#3a2a20" stroke-width="3" stroke-linejoin="round"/>
+</svg>
