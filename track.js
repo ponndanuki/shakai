@@ -56,13 +56,13 @@
     LOG(ev, d, disabled ? '(記録しない端末)' : ENDPOINT ? '' : '(URL未設定)');
     if (disabled || !ENDPOINT) return;
     var body = JSON.stringify(d);
+    // Googleのログイン状態（cookie）を送らない fetch を優先し、使えないときだけ sendBeacon
     try {
-      if (navigator.sendBeacon && navigator.sendBeacon(ENDPOINT, body)) return;
-    } catch (e) {}
-    try {
-      fetch(ENDPOINT, { method: 'POST', mode: 'no-cors', keepalive: true,
+      fetch(ENDPOINT, { method: 'POST', mode: 'no-cors', keepalive: true, credentials: 'omit',
         headers: { 'Content-Type': 'text/plain;charset=utf-8' }, body: body });
+      return;
     } catch (e) {}
+    try { navigator.sendBeacon && navigator.sendBeacon(ENDPOINT, body); } catch (e) {}
   }
 
   // 既存の関数を包んで、元の動作はそのまま呼ぶ
