@@ -413,7 +413,7 @@ const S=[
  {c:'intro',cam:EDO,say:'<b>伊能忠敬</b>は1745年、今の千葉県に生まれ、17歳で、<b>佐原</b>の商人の家に婿入りしました。酒づくりなどの商売で、家をたて直したのです。',
   run(){marker('sawara','佐原',{color:C.green,dx:12});marker('edo','江戸',{color:C.ai,dx:12});wipe();
    cue([[0.2,()=>card('<h4>伊能忠敬（1745〜1818）</h4><img src="'+IMG+'inou_portrait.jpg" alt=""><div class="cap">伊能忠敬像（青木勝次郎）</div>')],
-    [0.6,()=>stamp('佐原の商人')]])}},
+    [0.6,()=>stamp('佐原の商人',{top:'40%'})]])}},
  {c:'intro',cam:EDO,say:'<b>天明の大ききん</b>のときには、蔵の米を出して村の人を救うなど、地元の人たちから、あつい信頼を集めました。',
   run(){marker('sawara','佐原',{color:C.green,dx:12});wipe();
    const b=studio();const p=el('panel','',b);p.style.top='34%';
@@ -422,7 +422,7 @@ const S=[
   run(){const b=studio();const p=el('panel','',b);p.style.top='6%';
    cue([[0.1,()=>rowsAt(p,'1794年　<em>50歳</em>で隠居')],[0.35,()=>rowsAt(p,'🏙 江戸で天文学を学ぶ')],
     [0.6,()=>rowsAt(p,'👨‍🏫 先生は<em>高橋至時</em>（19歳年下）')],
-    [0.85,()=>{const g=ino({parent:b,x:50,y:0,w:'clamp(130px,40vw,240px)'});g.act('bow')}]])}},
+    [0.85,()=>{const g=ino({parent:b,x:50,y:9,w:'clamp(130px,40vw,240px)'});g.act('bow')}]])}},
  {c:'why',cam:EDO,say:'知りたかったのは、地球の大きさ。<b>緯度</b>1度ぶんの距離が分かれば、計算できます。でも、江戸の近くだけでは、誤差が大きくなってしまうのでした。',
   run(){const b=studio();telop('地球の<br>大きさは？','s',b);const p=el('panel','',b);p.style.top='34%';
    cue([[0.3,()=>rowsAt(p,'📏 緯度1度ぶんの距離　＝　地球の大きさ')],[0.6,()=>rowsAt(p,'🧭 短い距離だと　<em>誤差が大きい</em>')],[0.85,()=>rowsAt(p,'➡ もっと<em>遠く</em>まで測りたい！')]])}},
@@ -433,12 +433,12 @@ const S=[
   run(){marker('edo','江戸',{color:C.ai,dx:12});marker('hakodate','函館',{color:C.shu,dx:12});wipe();
    after(500,()=>route(['edo',[140.9,38.3],[141.3,40.6],'hakodate'],{color:C.green,w:5,dur:1600,arrow:true}));
    after(2200,()=>route(['hakodate',[142.0,42.2],[143.3,42.6],'atsuke'],{color:C.ai,w:5,dur:2200,arrow:true}));
-   cue([[0.15,()=>stamp('1800年　55歳で出発')],[0.75,()=>card('<h4>第1次測量</h4><img src="'+IMG+'inomap_loc17.jpg" alt=""><div class="cap">伊能図の写本（米国議会図書館）</div>')]])}},
+   cue([[0.15,()=>stamp('1800年　55歳で出発',{top:'38%'})],[0.75,()=>card('<h4>第1次測量</h4><img src="'+IMG+'inomap_loc17.jpg" alt=""><div class="cap">伊能図の写本（米国議会図書館）</div>')]])}},
  {c:'how',cam:EDO,say:'測り方は、歩数です。一歩の長さを約69センチにそろえて歩き、歩いた数から距離を出しました。のちには、車輪のついた<b>量程車</b>も使いました。',
-  run(){const b=studio();const p=el('panel','',b);p.style.top='4%';
+  run(){const b=studio();const p=el('panel','',b);p.style.top='9%';
    cue([[0.12,()=>rowsAt(p,'👣 一歩　＝　<em>約69センチ</em>')],[0.35,()=>rowsAt(p,'🔢 歩数 × 歩幅　＝　距離')],
-    [0.55,()=>{const ph=el('photo',`<img src="${IMG}kiki.jpg" alt=""><div class="cap">量程車（CC BY-SA 3.0 Momotarou2012）</div>`,b);ph.style.top='36%'}],
-    [0.85,()=>stamp('量程車も使った',{top:'80%'})]])}},
+    [0.55,()=>{const ph=el('photo',`<img src="${IMG}kiki.jpg" alt=""><div class="cap">量程車（CC BY-SA 3.0 Momotarou2012）</div>`,b);ph.style.top='40%'}],
+    [0.85,()=>stamp('量程車も使った',{top:'30%'})]])}},
  {c:'how',cam:EDO,say:'夜は、<b>象限儀</b>で星の高さを測り、今いる場所の<b>緯度</b>を確かめました。昼の測量のずれを、星で直したのです。',
   run(){const b=studio({dark:true,lights:false});telop('夜は<br>星を測る','w',b);const p=el('panel','',b);p.style.top='34%';
    const ph=el('photo',`<img src="${IMG}kiki.jpg" alt=""><div class="cap">量程車（CC BY-SA 3.0 Momotarou2012）</div>`,b);ph.style.top='58%';ph.style.width='54%';
@@ -459,9 +459,9 @@ const S=[
    cue([[0.25,()=>rowsAt(p,'📏 緯度1度　＝　<em>28.2里</em>')],[0.5,()=>rowsAt(p,'＝　約<em>110.75</em>キロ')],
     [0.8,()=>{el('flash','',b);rowsAt(p,'🌏 今の値と<em>ほとんど同じ！</em>')}]])}},
  {c:'res',cam:JP,say:'1818年、忠敬は73歳で亡くなります。地図づくりは弟子たちが引きつぎ、1821年、<b>大日本沿海輿地全図</b>が完成しました。',
-  run(){const b=studio();const ph=el('photo',`<img src="${IMG}inomap.jpg" alt=""><div class="cap">伊能図（大日本沿海輿地全図）</div>`,b);ph.style.top='4%';
+  run(){const b=studio();const ph=el('photo',`<img src="${IMG}inomap.jpg" alt=""><div class="cap">伊能図（大日本沿海輿地全図）</div>`,b);ph.style.top='9%';
    const p=el('panel','',b);p.style.top='62%';
-   cue([[0.2,()=>rowsAt(p,'1818年　忠敬が亡くなる（73歳）')],[0.55,()=>rowsAt(p,'👥 <em>弟子たち</em>が引きつぐ')],[0.85,()=>stamp('1821年　完成',{top:'80%'})]])}},
+   cue([[0.2,()=>rowsAt(p,'1818年　忠敬が亡くなる（73歳）')],[0.55,()=>rowsAt(p,'👥 <em>弟子たち</em>が引きつぐ')],[0.85,()=>stamp('1821年　完成',{top:'53%'})]])}},
  {c:'res',cam:JP,say:'幕末に、イギリス海軍が日本の海岸を測ろうとしたとき、見せられたこの地図の正確さにおどろいた、といわれます。',
   run(){const b=studio();telop('外国人も<br>びっくり','s',b);const p=el('panel','',b);p.style.top='34%';
    cue([[0.3,()=>rowsAt(p,'⚓ 幕末の<em>イギリス海軍</em>')],[0.6,()=>rowsAt(p,'🗺 伊能図を見て　<em>正確さにおどろく</em>')]])}},
@@ -469,10 +469,10 @@ const S=[
   run(){const b=studio();const p=el('panel','',b);p.style.top='20%';
    cue([[0.25,()=>rowsAt(p,'🏛 明治の<em>地図・海図</em>の土台に')],[0.6,()=>rowsAt(p,'🗾 日本の形を示した　<em>最初の正確な地図</em>')]])}},
  {c:'res',cam:EDO,say:'まとめです。50歳から学びはじめ、17年、約4万キロを歩いて、日本の形をはじめて正確に示した伊能忠敬。一歩ずつの積みかさねが、地図になりました。',
-  run(){const b=studio();const p=el('panel','',b);p.style.top='5%';
+  run(){const b=studio();const p=el('panel','',b);p.style.top='8%';
    [['📚','50歳で江戸に出て、天文学を学ぶ'],['🚶','1800年から17年、全10回の測量'],['🌏','約4万キロ＝地球1周ぶん'],['🗺','弟子たちが大日本沿海輿地全図を完成（1821年）'],['🏛','明治以降の地図づくりの土台に']].forEach(([e,t],j)=>{const d=rowsAt(p,e+' '+t);d.style.animationDelay=(300+j*600)+'ms'});
-   const g=ino({parent:b,x:50,y:3,w:'clamp(130px,40vw,240px)'});cue([[0.75,()=>g.act('bow',2600).say('一歩ずつ、<br>ですね',true)]]);
-   const cr=el('credit','画像：伊能忠敬像（青木勝次郎）・伊能図・佐原の町なみ・旧宅（CC0）はパブリックドメインなど。量程車（Momotarou2012, CC BY-SA 3.0）、象限儀（テレストレラッソ, CC BY-SA 4.0）。出典の詳細は credits.md。覚えうた：曲「歓喜の歌」（ベートーヴェン）、歌声 NEUTRINO',b);cr.style.bottom='auto';cr.style.top='46%'}}
+   const g=ino({parent:b,x:50,y:3,w:'clamp(100px,30vw,190px)'});cue([[0.75,()=>g.act('bow',2600).say('一歩ずつ、<br>ですね',true)]]);
+   const cr=el('credit','画像：伊能忠敬像（青木勝次郎）・伊能図・佐原の町なみ・旧宅（CC0）はパブリックドメインなど。量程車（Momotarou2012, CC BY-SA 3.0）、象限儀（テレストレラッソ, CC BY-SA 4.0）。出典の詳細は credits.md。覚えうた：曲「歓喜の歌」（ベートーヴェン）、歌声 NEUTRINO',b);cr.style.bottom='auto';cr.style.top='47%'}}
 ];
 const YOMI=[['1745年','せんななひゃくよんじゅうごねん'],['1794年','せんななひゃくくじゅうよねん'],['1800年','せんはっぴゃくねん'],['1816年','せんはっぴゃくじゅうろくねん'],['1818年','せんはっぴゃくじゅうはちねん'],['1821年','せんはっぴゃくにじゅういちねん'],['伊能忠敬','いのうただたか'],['伊能図','いのうず'],['忠敬','ただたか'],['千葉県','ちばけん'],['佐原','さわら'],['婿入り','むこいり'],['酒づくり','さけづくり'],['天明の大ききん','てんめいのだいききん'],['隠居','いんきょ'],['高橋至時','たかはしよしとき'],['天文学','てんもんがく'],['緯度','いど'],['蝦夷地','えぞち'],['函館','はこだて'],['象限儀','しょうげんぎ'],['量程車','りょうていしゃ'],['69センチ','ろくじゅうきゅうせんち'],['17年','じゅうななねん'],['10回','じっかい'],['4万キロ','よんまんきろ'],['28.2里','にじゅうはちてんにり'],['110.75キロ','ひゃくじゅうてんななごきろ'],['大日本沿海輿地全図','だいにほんえんかいよちぜんず'],['海図','かいず'],['覚えうた','おぼえうた'],['……','']];
 
